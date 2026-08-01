@@ -8,17 +8,25 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: alpha-firmware-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - name: Check out firmware
         uses: actions/checkout@v4
 
       - name: Install Alpha cross tools
+        env:
+          DEBIAN_FRONTEND: noninteractive
         run: |
-          sudo apt-get update
-          sudo apt-get install -y gcc-alpha-linux-gnu binutils-alpha-linux-gnu
+          sudo -E apt-get update
+          sudo -E apt-get install -y --no-install-recommends \
+            gcc-alpha-linux-gnu binutils-alpha-linux-gnu
 
       - name: Build Clipper firmware
         run: make CROSS=alpha-linux-gnu-
