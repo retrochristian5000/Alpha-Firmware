@@ -8,7 +8,8 @@ SYSTEM = clipper
 ASFLAGS = -Wa,-m21264 -Wa,--noexecstack
 OPT= -O2
 CFLAGS = $(OPT) -g1 -Wall -fvisibility=hidden -fno-strict-aliasing \
-  -msmall-text -msmall-data -mno-fp-regs -mbuild-constants
+  -ffreestanding -fno-builtin -msmall-text -msmall-data -mno-fp-regs \
+  -mbuild-constants
 CPPFLAGS = -DSYSTEM_H='"sys-$(SYSTEM).h"'
 
 CFLAGS += -mcpu=ev67
