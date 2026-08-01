@@ -21,6 +21,7 @@
 #include "protos.h"
 #include "console.h"
 #include "vgatables.h"
+#include "ide.h"
 
 
 static void
@@ -121,6 +122,9 @@ do_console(void)
   wrent(entInt, 0);
   set_console_alarm();
   swpipl(0);
+
+  /* Enumerate firmware-visible ATA disks and ATAPI CD-ROM devices.  */
+  ide_setup();
 
   if (have_vga)
   {
