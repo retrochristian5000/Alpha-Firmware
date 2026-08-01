@@ -14,7 +14,7 @@ CPPFLAGS = -DSYSTEM_H='"sys-$(SYSTEM).h"'
 CFLAGS += -mcpu=ev67
 
 OBJS = pal.o sys-$(SYSTEM).o init.o crb.o uart.o console.o console-low.o \
-	ps2port.o pci.o vgaio.o vgatables.o vgafonts.o \
+	ps2port.o pci.o ide.o vgaio.o vgatables.o vgafonts.o \
 	printf.o util.o memset.o memcpy.o strlen.o
 
 all: palcode-$(SYSTEM)
@@ -31,5 +31,6 @@ init.o: init.c protos.h hwrpb.h osf.h uart.h sys-$(SYSTEM).h core-$(CORE).h
 printf.o: printf.c uart.h
 uart.o: uart.c uart.h protos.h
 crb.o: crb.c hwrpb.h protos.h console.h uart.h
-console.o: console.c console.h protos.h
+console.o: console.c console.h protos.h ide.h
 pci.o: pci.c protos.h pci.h pci_regs.h
+ide.o: ide.c ide.h protos.h pci.h pci_regs.h
