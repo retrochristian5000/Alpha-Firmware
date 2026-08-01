@@ -1,0 +1,27 @@
+name: Build Alpha firmware
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out firmware
+        uses: actions/checkout@v4
+
+      - name: Install Alpha cross tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gcc-alpha-linux-gnu binutils-alpha-linux-gnu
+
+      - name: Build Clipper firmware
+        run: make CROSS=alpha-linux-gnu-
+
+      - name: Verify firmware image
+        run: test -s palcode-clipper
