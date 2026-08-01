@@ -22,7 +22,6 @@
 
 #define PCI_VENDOR_ID_CMD             0x1095
 #define PCI_DEVICE_ID_CMD_646         0x0646
-#define PCI_CLASS_STORAGE_IDE         0x0101
 
 #define CMD646_CNTRL                  0x51
 #define CMD646_CNTRL_EN_CH0           0x04
@@ -280,21 +279,17 @@ static int
 ide_find_controller(void)
 {
   int bdf, max;
-  int class_match = -1;
 
   foreachpci (bdf, max)
     {
       uint16_t vendor = pci_config_readw(bdf, PCI_VENDOR_ID);
       uint16_t device = pci_config_readw(bdf, PCI_DEVICE_ID);
-      uint16_t class_id = pci_config_readw(bdf, PCI_CLASS_DEVICE);
 
       if (vendor == PCI_VENDOR_ID_CMD && device == PCI_DEVICE_ID_CMD_646)
         return bdf;
-      if (class_match < 0 && class_id == PCI_CLASS_STORAGE_IDE)
-        class_match = bdf;
     }
 
-  return class_match;
+  return -1;
 }
 
 static void
@@ -344,7 +339,7 @@ ide_setup(void)
 
   if (bdf < 0)
     {
-      printf("IDE: no PCI IDE controller found\r\n");
+      printf("IDE: no CMD646 controller found\r\n");
       return;
     }
 
